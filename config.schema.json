@@ -5,12 +5,135 @@
   "schema": {
     "type": "object",
     "properties": {
-      "name": {
-        "title": "Name",
+      "hvac_address": {
+        "title": "HVAC Address",
         "type": "string",
         "required": true,
-        "default": "Example Dynamic Platform"
+        "default": "airtouch; ip = 192.168.253.127"
+      },
+      "thermostat_table": {
+        "title": "HVAC Thermostat",
+        "type": "array",
+        "items": {
+          "title": "Unit",
+          "type": "object",
+          "properties": {
+            "name": {
+              "title": "Unit Name",
+              "type": "string",
+              "required": true
+            },
+            "address": {
+              "title": "Unit Address",
+              "type": "string",
+              "required": true
+            },
+            "zone_table": {
+              "title": "Zone",
+              "type": "array",
+              "items": {
+                "title": "Zone",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "title": "Zone Name",
+                    "type": "string",
+                    "required": true
+                  },
+                  "device_type": {
+                    "title": "Zone Type",
+                    "type": "string",
+                    "required": true,
+                    "oneOf": [
+                      {
+                        "title": "Binary",
+                        "enum": [
+                          "switch"
+                        ]
+                      },
+                      {
+                        "title": "Percent",
+                        "enum": [
+                          "slider"
+                        ]
+                      }
+                    ]
+                  },
+                  "address": {
+                    "title": "Zone Address",
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
-  }
+  },
+  "layout": [
+    "hvac_address",
+    {
+      "type": "section",
+      "items": [
+        {
+          "key": "thermostat_table",
+          "type": "array",
+          "notitle": true,
+          "items": [
+            {
+              "displayFlex": true,
+              "flex-direction": "row",
+              "items": [
+                {
+                  "title": "HVAC Thermostat"
+                },
+                {
+                  "displayFlex": true,
+                  "flex-direction": "column",
+                  "items": [
+                    {
+                      "key": "thermostat_table[].name",
+                      "flex": "1 1 40%"
+                    },
+                    {
+                      "key": "thermostat_table[].address",
+                      "flex": "1 1 60%"
+                    }
+                  ]
+                },
+                {
+                  "key": "thermostat_table[].zone_table",
+                  "type": "array",
+                  "notitle": true,
+                  "items": [
+                    {
+                      "displayFlex": true,
+                      "flex-direction": "row",
+                      "items": [
+                        {
+                          
+                          "key": "thermostat_table[].zone_table[].name",
+                          "flex": "1 1 40%"
+                        },
+                        {
+                          "key": "thermostat_table[].zone_table[].device_type",
+                          "flex": "1 1 20%"
+                        },
+                        {
+                          "key": "thermostat_table[].zone_table[].address",
+                          "flex": "1 1 40%"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
